@@ -4,22 +4,25 @@ require("dotenv").config({ path: "./config.env" });
 const express = require("express")
 const app = express();
 
+const productRouter = require("./routes/productRouter");
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
 const connectDB = require("./config/configDB");
 
 // Static files
 app.use(express.static("./public"));
+
 // JSON Middleware
 app.use(express.json());
 
-
+// Routes
+app.use("/api/v1/products", productRouter);
 
 // Not Found Page
 app.use(notFound);
+
 // Error Handler
 app.use(errorHandler);
-
 
 // Environment Variables
 const PORT = process.env.PORT || 3000;
