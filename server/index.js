@@ -6,6 +6,7 @@ const app = express();
 
 const notFound = require("./middleware/notFound");
 const errorHandler = require("./middleware/errorHandler");
+const connectDB = require("./config/configDB");
 
 // Static files
 app.use(express.static("./public"));
@@ -23,6 +24,18 @@ app.use(errorHandler);
 // Environment Variables
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log("> Listening at Port", PORT);
-})
+// Server
+const startServer = async () => {
+  try {
+    await connectDB();
+    console.log("Connected to Database ...");
+
+    app.listen(process.env.PORT || 80, () => {
+      console.log("Listen on Port ", process.env.PORT);
+    })
+  } catch (error) {
+    console.log("Error: ", error.message);
+  }
+}
+
+startServer();
